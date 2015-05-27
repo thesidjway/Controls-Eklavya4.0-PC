@@ -15,7 +15,7 @@ find_package(catkin REQUIRED COMPONENTS
 	message_generation 
 	joy
 	diagnostic_updater
-	controls_msgs
+	
 )
 
 
