@@ -6,7 +6,7 @@
 
 int manualmode=0;
 using namespace std;
-
+int bias=1400;
 
 VxPid::VxPid() : Vx_t_lock(), Alpha_lock(), Vl_Vr_a_lock(),manualmode_lock() {
 
@@ -99,7 +99,6 @@ void VxPid::implementPid(int argc, char** argv)
 	ros::Subscriber Override_Subscriber = nh_.subscribe<geometry_msgs::Twist>("target_pose", 5,&VxPid::vxTargetUpdateCallback, this);
 	//ros::Subscriber Alpha_Actual_Subscriber = nh_.subscribe<std_msgs::Float64>("alpha_val_actual" , 5 , Alpha_actual_callback);
 	ros::Subscriber Encoder_Subscriber = nh_.subscribe<geometry_msgs::Twist>("encoders", 5, &VxPid::encoderCallback, this);
-	ros::Publisher pwm_pub = nh_.advertise<std_msgs::Int32>("pwmpub", 100);
 																	
 
 
@@ -108,6 +107,7 @@ void VxPid::implementPid(int argc, char** argv)
 	nh_.getParam("/vxpid_node/Kd_Vx", Kd_Vx);
 	//nh_.getParam("/Vs_PID/Vs_PID_loop_rate", Vs_PID_loop_rate);
 	nh_.getParam("/vxpid_node/PWM_min", PWM_min_percent);
+	nh_.getParam("/vxpid_node/bias", bias);
 	nh_.getParam("/vxpid_node/PWM_max", PWM_max_percent);
 	nh_.getParam("/vxpid_node/PWM_PERIOD_TIME", PWM_PERIOD_TIME);
 	nh_.getParam("/vxpid_node/vx_pid_loop_rate", vx_pid_loop_rate);
@@ -118,9 +118,8 @@ void VxPid::implementPid(int argc, char** argv)
 	
 	ros::Rate loop_rate(vx_pid_loop_rate);
 	
-//FILE *file0;
+FILE *file0;
 std_msgs::Float64 va_msg;
-std_msgs::Int32 PWM_msg;
 
 	while (ros::ok()) {
 		Vl_Vr_a_lock.lock();
@@ -157,7 +156,7 @@ std_msgs::Int32 PWM_msg;
 			Vx_error_integral = - PWM_max_percent;
 		}
 
-		PWM_Duty_Cycle = (Vx_error) * Kp_Vx + (Vx_error_integral) + (Vx_error_diff) * Kd_Vx + 1650;
+		PWM_Duty_Cycle = (Vx_error) * Kp_Vx + (Vx_error_integral) + (Vx_error_diff) * Kd_Vx + bias;
 		//printf("Vyt is %f",Vy_t);
 
 		if(std::signbit(Vy_t)) {
@@ -173,14 +172,13 @@ std_msgs::Int32 PWM_msg;
 int t,bit;
 
 		
-		
+
 		printf(" G_PWM: %3.3f \n ", PWM_Duty_Cycle); 
 		
-		pwm_pub.publish(PWM_msg);
-		/*file0 = fopen("/dev/serial/by-id/usb-Arduino__www.arduino.cc__Arduino_Due_Prog._Port_55432333138351607141-if00","w");
+		file0 = fopen("/dev/serial/by-id/usb-Arduino__www.arduino.cc__Arduino_Due_Prog._Port_55432333138351D09122-if00","w");
 		fprintf(file0,"%d",(int)PWM_Duty_Cycle);
-		fprintf(file0,"%c",'@');*/
-		/*manualmode_lock.lock();
+		fprintf(file0,"%c",'@');
+		manualmode_lock.lock();
 		if(manualmode==1)
 		{
 			fprintf(file0,"%c",'m');
@@ -190,7 +188,7 @@ int t,bit;
 			fprintf(file0,"%c",'a');
 		}
 		manualmode_lock.unlock();
-		fclose(file0);*/
+		fclose(file0);
 		
 		ros::spinOnce();
 

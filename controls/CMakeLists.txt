@@ -57,9 +57,9 @@ target_link_libraries(modeswitching_node ${catkin_LIBRARIES} )
 add_dependencies(modeswitching_node roscpp rospy joy sensor_msgs std_msgs geometry_msgs diagnostic_updater)
 
 
-add_executable(wpid_node src/w_pid.cpp )
-target_link_libraries(wpid_node ${catkin_LIBRARIES})
-add_dependencies(wpid_node roscpp std_msgs geometry_msgs)
+add_executable(cpid_node src/c_pid.cpp )
+target_link_libraries(cpid_node ${catkin_LIBRARIES})
+add_dependencies(cpid_node roscpp std_msgs geometry_msgs)
 
 add_executable(vxpid_node src/vx_pid.cpp)
 target_link_libraries(vxpid_node ${catkin_LIBRARIES})
