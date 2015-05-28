@@ -58,7 +58,7 @@ void CPid::encoderCallback(const geometry_msgs::Twist::ConstPtr &msg)
 
 void CPid::vninsCallback(const geometry_msgs::Twist::ConstPtr &msg)
 {
-		W_a=msg->angular.z;
+		W_a = - msg->angular.z;
 		
 		if(W_a < 0.002 && W_a >- 0.002)
 		{

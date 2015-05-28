@@ -189,7 +189,7 @@ void ModeSwitcher::planCallback(const geometry_msgs::Twist::ConstPtr& pose)
 	ros::Subscriber plan_sub;  
 
   	joy_sub = nh_.subscribe <sensor_msgs::Joy> ("joy", 1000 , &ModeSwitcher::joyCallback , this); 
-  	plan_sub = nh_.subscribe <geometry_msgs::Twist> ("cmd_vel", 1000 , &ModeSwitcher::planCallback, this); 
+  	plan_sub = nh_.subscribe <geometry_msgs::Twist> ("cmd_vel_filtered", 1000 , &ModeSwitcher::planCallback, this); 
   	
 	nh_.getParam("/modeswitching_node/maxvelocity", Max_Xbox_Vx);
 	nh_.getParam("d",d);
