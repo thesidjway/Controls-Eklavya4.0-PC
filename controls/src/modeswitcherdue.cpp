@@ -17,6 +17,7 @@ ModeSwitcher::ModeSwitcher() :
 	alpha=0;
 
 	W_xbox=0;
+	
 	Vx_Xbox=0;
 	Vy_Xbox=0.0;
 	Vz_Xbox=+0.0;
@@ -124,13 +125,13 @@ void ModeSwitcher::joyCallback(const sensor_msgs::Joy::ConstPtr& joy) //main cal
 		if(valaxes==1)
 		{
 			W_Xbox_lock.lock();
-			W_xbox=W_xbox+0.05;
+			W_xbox=W_xbox+0.15;
 			W_Xbox_lock.unlock();
 		}
 		if(valaxes2==1)
 		{
 			W_Xbox_lock.lock();
-			W_xbox=W_xbox-0.05;
+			W_xbox=W_xbox-0.15;
 			W_Xbox_lock.unlock();
 		}
 
@@ -231,7 +232,7 @@ void ModeSwitcher::planCallback(const geometry_msgs::Twist::ConstPtr& pose)
 				Vy_Xbox_lock.unlock();
 				Vz_Xbox_lock.unlock();
 				W_Xbox_lock.lock();
-				finaltwist.angular.z= W_xbox;
+				finaltwist.angular.z= W_xbox*Vx_Xbox;
 			//	cout;
 				cout<<endl;
 				W_Xbox_lock.unlock();

@@ -67,6 +67,7 @@ void CPid::vninsCallback(const geometry_msgs::Twist::ConstPtr &msg)
 		
 		C_a_Lock.lock();
 		
+		printf("vDead: %lf",vDead);
 		if ( Vx_a < vDead && Vx_a > - vDead  ){
 			curve_a = 0;		
 		} else {
