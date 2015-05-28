@@ -59,13 +59,15 @@ void CPid::encoderCallback(const geometry_msgs::Twist::ConstPtr &msg)
 void CPid::vninsCallback(const geometry_msgs::Twist::ConstPtr &msg)
 {
 		W_a=msg->angular.z;
-		if(W_a<0.001 && W_a >-0.001)
+		
+		if(W_a<0.002 && W_a >-0.002)
 		{
 			W_a=0;
 		}
+		
 		C_a_Lock.lock();
 		
-		if ( Vx_a == 0 ){
+		if ( Vx_a <0.1 && Vx_a >-0.1  ){
 			curve_a = 0;		
 		} else {
 			Vl_Vr_a_lock.lock();  

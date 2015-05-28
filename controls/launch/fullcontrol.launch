@@ -35,7 +35,7 @@
 
 
 <node pkg="controls" type="vxpid_node" name="vxpid_node" respawn="true" output="screen">
-	<param name="Kp_Vx" value="250.0"/>  <!--200,5.0,55.0-->
+	<param name="Kp_Vx" value="260.0"/>  <!--200,5.0,55.0-->
 	<param name="Ki_Vx" value="5.0"/>
 	<param name="Kd_Vx" value="55"/>
 	<param name="PWM_min" value="1400"/>
@@ -46,9 +46,9 @@
 </node>
 
 <node pkg="controls" type="cpid_node" name="cpid_node" respawn="true" output="screen">
-	<param name="Kp_C" value="300"/>  <!--300,0.3,10-->
-	<param name="Ki_C" value="1"/>
-	<param name="Kd_C" value="50"/>
+	<param name="Kp_C" value="440"/>  <!--300,0.3,10-->
+	<param name="Ki_C" value="2.2"/>
+	<param name="Kd_C" value="140"/>
 	<param name="c_pid_loop_rate" value="15"/>
 	
 </node>
