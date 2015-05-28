@@ -27,7 +27,7 @@ CPid::CPid() :
 	
 	count_max=1000;
 	count_min=-1000;
-
+	vDead = 0.08;
 }
 
 double CPid::getMinMax(int Cur_Var, int max, int min)
@@ -60,14 +60,14 @@ void CPid::vninsCallback(const geometry_msgs::Twist::ConstPtr &msg)
 {
 		W_a=msg->angular.z;
 		
-		if(W_a<0.002 && W_a >-0.002)
+		if(W_a < 0.002 && W_a >- 0.002)
 		{
 			W_a=0;
 		}
 		
 		C_a_Lock.lock();
 		
-		if ( Vx_a <0.1 && Vx_a >-0.1  ){
+		if ( Vx_a < vDead && Vx_a > - vDead  ){
 			curve_a = 0;		
 		} else {
 			Vl_Vr_a_lock.lock();  
@@ -139,8 +139,11 @@ void CPid::implementPid(int argc, char** argv)
   pid_nh_.getParam("cont_min", count_min);
   pid_nh_.getParam("d", d); // Front wheel center to rear wheel line center distance
   pid_nh_.getParam("r", r); // Rear wheel center to center of line joining distance
+  pid_nh_.getParam("/cpid_node/vDead", vDead);      
 
   pid_nh_.getParam("/cpid_node/c_pid_loop_rate", c_pid_loop_rate);
+
+
 
   ros::Rate loop_rate(c_pid_loop_rate);
 
@@ -201,7 +204,8 @@ void CPid::implementPid(int argc, char** argv)
 
     ros::spinOnce();
   
-    loop_rate.sleep();
+    loop_rate.sleep
+    ();
 
   }
 

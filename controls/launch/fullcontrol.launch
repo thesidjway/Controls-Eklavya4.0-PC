@@ -50,6 +50,7 @@
 	<param name="Ki_C" value="2.2"/>
 	<param name="Kd_C" value="140"/>
 	<param name="c_pid_loop_rate" value="15"/>
+	<param name="vDead" value="0.07"/>
 	
 </node>
 

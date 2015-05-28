@@ -38,7 +38,7 @@ private:
 	
 	double count_max;
 	double count_min;
-	 
+	float  vDead; 
 	
 	
 public:
